@@ -25,7 +25,6 @@ export default class Column extends React.Component {
                 <Droppable droppableId={this.props.column.id}>
                     {(provided)=>(
                         <TaskList
-                            innerRef={provided.innerRef}
                             ref={provided.innerRef}
                             {...provided.droppableProps}
                         >
