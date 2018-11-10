@@ -16,9 +16,14 @@ class App extends React.Component {
         this.state = data;
     }
 
-    onDragStart = () => {
+    onDragStart = (start) => {
         // change the color
         document.body.style.color = 'orange';
+        const homeIn = this.state.columnOrder.indexOf(start.source.droppableId);
+        
+        this.setState({
+            homeIn,
+        });
     };
 
     onDragUpdate = update => {
@@ -31,6 +36,9 @@ class App extends React.Component {
     };
 
     onDragEnd = result => {
+        this.setState(
+            {homeIndex: null,}
+        )
         document.body.style.color = 'inherit';
 
         // reset the color
@@ -108,11 +116,12 @@ class App extends React.Component {
                 onDragUpdate= {this.onDragUpdate}
             >
                 <Container>
-                    {this.state.columnOrder.map(columnId => {
+                    {this.state.columnOrder.map((columnId, index )=> {
                     const column = this.state.columns[columnId];
                     const tasks = column.taskIds.map(taskId => this.state.task[taskId]);
 
-                    return <Column key={column.id} column={column} tasks={tasks} />;
+                    const isDropDisabled = index < this.state.homeIn;
+                    return <Column key={column.id} column={column} tasks={tasks} isDropDisabled={isDropDisabled}/>;
                     })}
                 </Container>
             </DragDropContext>

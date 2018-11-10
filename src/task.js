@@ -7,7 +7,12 @@ const Container = styled.div`
     padding: 8px;
     margin-bottom: 8px;
     border-radius: 2px;
-    background-color: ${props => (props.isDragging ? 'lightgreen' : 'white')};
+    background-color: ${props => (
+        props.isDragDisabled 
+        ? 'lightgrey'
+        : props.isDragging 
+        ? 'lightgreen' 
+        : 'white')};
     display: flex;
 `;
 
@@ -21,14 +26,20 @@ const Handle = styled.div`
 // snapshot is for styling
 export default class Task extends React.Component {
     render() {
+        const isDragDisabled = this.props.task.id === 'task1';
         return (
-            <Draggable draggableId={this.props.task.id} index={this.props.index}>
+            <Draggable 
+                draggableId={this.props.task.id} 
+                index={this.props.index}
+                isDragDisabled={isDragDisabled}
+            >
             {(provided, snapshot) => (
                 <Container
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                     isDragging={snapshot.isDragging}
+                    isDragDisabled={isDragDisabled}
                 >
                     {/* We create a new handle to allow user only opearte this part of button */}
                     {/* If we delete the dragHandleProps above, we are only able to use the orange box to move button */}

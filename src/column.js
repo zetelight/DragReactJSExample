@@ -28,7 +28,15 @@ export default class Column extends React.Component {
                 <Title>
                     {this.props.column.title}
                 </Title>
-                <Droppable droppableId={this.props.column.id}>
+                {/* 
+                    type keyword sonly allows button will be moved with same type 
+                    type={this.props.column.id === 'column3' ? 'done' : 'active'}                    
+                    */
+                }
+                <Droppable 
+                    droppableId={this.props.column.id}
+                    isDropDisabled={this.props.isDropDisabled}
+                >
                     {(provided, snapshot)=>(
                         <TaskList
                             ref={provided.innerRef}
