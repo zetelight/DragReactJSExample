@@ -11,7 +11,24 @@ class App extends React.Component {
         this.state = data;
     }
 
+    onDragStart = () => {
+        // change the color
+        document.body.style.color = 'orange';
+    };
+
+    onDragUpdate = update => {
+        // codes below might be wrong but the idea is here
+        // const { destination } = update;
+        // const opacity = destination
+        //   ? destination.index / Object.keys(this.state.tasks).length
+        //   : 0;
+        // document.body.style.backgroundColor = `rgba( 153, 141, 217, ${opacity})`;
+    };
+
     onDragEnd = result => {
+        document.body.style.color = 'inherit';
+
+        // reset the color
         const { destination, source, draggableId } = result;
 
         if (!destination) {
@@ -50,6 +67,8 @@ class App extends React.Component {
         return (
             <DragDropContext
                 onDragEnd = {this.onDragEnd}
+                onDragStart= {this.onDragStart}
+                onDragUpdate= {this.onDragUpdate}
             >
                 {this.state.columnOrder.map(columnId => {
                 const column = this.state.columns[columnId];
