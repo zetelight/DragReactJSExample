@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import data from './data';
 import Column from './column';
+import BigColumn from './bigColumn';
 import '@atlaskit/css-reset';
 import { DragDropContext } from 'react-beautiful-dnd';
 import styled from 'styled-components';
@@ -58,25 +59,25 @@ class App extends React.Component {
         const finish = this.state.columns[destination.droppableId];
 
         if (start === finish) {
-            const newTaskIds = Array.from(start.taskIds);
-            newTaskIds.splice(source.index, 1); // from the index, we remove one element
-            newTaskIds.splice(destination.index, 0, draggableId); // start from destination and insert the taskid
+            // const newTaskIds = Array.from(start.taskIds);
+            // newTaskIds.splice(source.index, 1); // from the index, we remove one element
+            // newTaskIds.splice(destination.index, 0, draggableId); // start from destination and insert the taskid
 
 
-            const newCol = {
-                ...start,
-                taskIds: newTaskIds
-            };
+            // const newCol = {
+            //     ...start,
+            //     taskIds: newTaskIds
+            // };
 
-            const newState = {
-                ...this.state,
-                columns: {
-                    ...this.state.columns, // keep other column, only modify the newCol id
-                    [newCol.id]: newCol
-                }
-            }
+            // const newState = {
+            //     ...this.state,
+            //     columns: {
+            //         ...this.state.columns, // keep other column, only modify the newCol id
+            //         [newCol.id]: newCol
+            //     }
+            // }
 
-            this.setState(newState);
+            // this.setState(newState);
             return;
         } else {
             // moving from one list too another
@@ -117,11 +118,13 @@ class App extends React.Component {
             >
                 <Container>
                     {this.state.columnOrder.map((columnId, index )=> {
+                    console.log("columnId: " + columnId);
+                    console.log("index: " + index);
                     const column = this.state.columns[columnId];
                     const tasks = column.taskIds.map(taskId => this.state.task[taskId]);
-
                     const isDropDisabled = index < this.state.homeIn;
-                    return <Column key={column.id} column={column} tasks={tasks} isDropDisabled={isDropDisabled}/>;
+                    if (index === 0) return <BigColumn key={column.id} column={column} tasks={tasks} isDropDisabled={isDropDisabled}/>;
+                    else return <Column key={column.id} column={column} tasks={tasks} isDropDisabled={isDropDisabled}/>;
                     })}
                 </Container>
             </DragDropContext>

@@ -11,19 +11,28 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
 `;
-// const Title = styled.h3`
-//     padding: 8px;
-// `;
+const Title = styled.h3`
+    padding: 8px;
+`;
 const TaskList = styled.div`
     padding: 8px;
     background-color: ${props => (props.isDraggingOver ? 'skyblue' : 'white')};
     flex-grow: 1;
     min-height: 100px;
-    height: 150px;
     overflow: auto;
+    height: 100%;
 `;
 
-export default class Column extends React.Component {
+
+function generate(data) {
+    return (
+            data.map((task, index) => (
+                <Task key={task.id} task={task} index={index}/>
+        ))
+    );
+}
+
+export default class BigColumn extends React.Component {
     render() {
         return (
             <Container>
@@ -45,9 +54,22 @@ export default class Column extends React.Component {
                             {...provided.droppableProps}
                             isDraggingOver={snapshot.isDraggingOver}
                         >
-                            {this.props.tasks.map((task, index) => (
-                            <Task key={task.id} task={task} index={index}/>
-                            ))}
+                            <Title > Section 1</Title>
+                            {
+                                generate(this.props.tasks.slice(0, 4))
+                            }
+                            <Title > Section 2</Title>
+                            {
+                                generate(this.props.tasks.slice(4, 7))
+                            }
+                            <Title > Section 3</Title>
+                            {
+                                generate(this.props.tasks.slice(7, 10))
+                            }                            
+                            <Title > Section 4</Title>
+                            {
+                                generate(this.props.tasks.slice(10))
+                            }
                             {provided.placeholder}
                         </TaskList>
                     )}
@@ -56,3 +78,7 @@ export default class Column extends React.Component {
         )
     }
 }
+
+// .map((task, index) => (
+//     <Task key={task.id} task={task} index={index}/>
+// )) 
