@@ -44,7 +44,7 @@ export default class Task extends React.Component {
                     {/* We create a new handle to allow user only opearte this part of button */}
                     {/* If we delete the dragHandleProps above, we are only able to use the orange box to move button */}
                     <Handle  {...provided.dragHandleProps} />
-                    {this.props.task.content}</Container>
+                    {this.props.task.id}</Container>
             )}
             </Draggable>
         );

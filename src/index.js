@@ -6,9 +6,28 @@ import '@atlaskit/css-reset';
 import { DragDropContext } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 
+const Container1 = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
 const Container = styled.div`
     display: flex;
 `;
+
+function generate(data, state) {
+    return (
+        <Container1>        
+         {data.map((columnId, index) => {
+            const column = state.columns[columnId];
+            const tasks = column.taskIds.map(taskId => state.cisCourses[taskId]);
+            const isDropDisabled = false;
+            return <Column key={column.id} column={column} tasks={tasks} isDropDisabled={isDropDisabled}/>;
+            //<Column key={column.id} column={column} tasks={tasks} isDropDisabled={false}/>
+        })}
+        </Container1>
+    );
+ };
 
 class App extends React.Component {
     constructor(props) {
@@ -115,14 +134,26 @@ class App extends React.Component {
                 onDragStart= {this.onDragStart}
                 onDragUpdate= {this.onDragUpdate}
             >
+                
                 <Container>
-                    {this.state.columnOrder.map((columnId, index )=> {
-                    const column = this.state.columns[columnId];
-                    const tasks = column.taskIds.map(taskId => this.state.task[taskId]);
+                    {/* <Container1>
+                        {this.state.columnOrder.slice(0,3).map((columnId, index )=> {
+                        const column = this.state.columns[columnId];
+                        const tasks = column.taskIds.map(taskId => this.state.cisCourses[taskId]);
 
-                    const isDropDisabled = index < this.state.homeIn;
-                    return <Column key={column.id} column={column} tasks={tasks} isDropDisabled={isDropDisabled}/>;
-                    })}
+                        const isDropDisabled = index < this.state.homeIn || index <= 2;
+                        return <Column key={column.id} column={column} tasks={tasks} isDropDisabled={isDropDisabled}/>;
+                        })}
+                    </Container1> */}
+                    {generate(this.state.columnOrder.slice(0, 3), this.state)}
+                        
+                        {this.state.columnOrder.slice(3).map((columnId, index)=> {
+                        const column = this.state.columns[columnId];
+                        const tasks = column.taskIds.map(taskId => this.state.cisCourses[taskId]);
+
+                        const isDropDisabled = false;
+                        return <Column key={column.id} column={column} tasks={tasks} isDropDisabled={isDropDisabled}/>;
+                        })}
                 </Container>
             </DragDropContext>
         );
